@@ -1,30 +1,40 @@
 import axios from 'axios';
-
-export const FETCH_SMURF = 'FETCH_SMURF';
-export const FETCH_SMURF_API = 'FETCH_SMURF_API';
-export const FAILED_SMURF_API = 'FAILED_SMURF_API';
+export const FETCH_START = 'FETCH_START';
+export const FETCH_SUCCESS = 'FETCH_SUCCESS';
+export const FETCH_FAIL = 'FETCH_FAIL';
 export const ADD_SMURF = 'ADD_SMURF';
-export const ADD_ERROR_MESSAGE = 'ADD_ERROR_MESSAGE';
+export const ADD_ERROR = 'ADD_ERROR';
 
-export const fetchSmurfs = () => {
-    return( dispatch ) => {
-        dispatch(fetchSmurf);
-
-        axios.get('http://localhost:3333/smurfs')
-        .then(res => {
-            dispatch(fetchAllSmurfs(res.data));
-        })
-        .catch(err => {
-            dispatch(failedSmurf(err))
-        })
-    }
+export const fetchSmurf = () => {
+    return ( dispatch => {
+        dispatch({type: FETCH_START});
+        axios.get(`http://localhost:3333/smurfs`)
+            .then(res => {
+                dispatch(fetchSuccess(res.data))
+            })
+            .catch(err => addError(err));
+    });
 }
 
-export const fetchSmurf = () => ({ type: FETCH_SMURF });
-export const fetchAllSmurfs = ( smurfs ) => ({ type: FETCH_SMURF_API, payload: smurfs });
-export const failedSmurf = ( error ) => ({ type: FAILED_SMURF_API, payload: error });
-export const addSmurf = ( smurf ) => ({ type: ADD_SMURF, payload: smurf });
-export const addError = ( error ) => ({ type:ADD_ERROR_MESSAGE, payLoad: error });
+export const fetchStart = () => {
+    return ({type: FETCH_START});
+}
+
+export const fetchSuccess = (smurfs) => {
+    return ({type: FETCH_SUCCESS, payload: smurfs})
+}
+
+export const fetchFail = (error) => {
+    return ({type: FETCH_FAIL, payload: error})
+}
+
+export const addSmurf = (smurfs) => {
+    return ({type: ADD_SMURF, payload: smurfs})
+}
+
+export const addError = (error) => {
+    return ({type: ADD_ERROR, payload: error})
+}
 
 //Task List:
 //1. Add a thunk action called fetchSmurfs that triggers a loading status display in our application, performs an axios call to retreive smurfs from our server, saves the result of that call to our state and shows an error if one is made.
