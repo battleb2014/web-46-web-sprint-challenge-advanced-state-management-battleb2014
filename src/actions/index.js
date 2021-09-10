@@ -12,13 +12,15 @@ export const fetchSmurfs = () => {
 
         axios.get('http://localhost:3333/smurfs')
         .then(res => {
-            console.log(res.data);
+            dispatch(fetchAllSmurfs(res.data));
         })
-        .catch()
+        .catch(err => {
+            dispatch(failedSmurf(err))
+        })
     }
 }
 
-export const fetchSmurf = (  ) => ({ type: FETCH_SMURF });
+export const fetchSmurf = () => ({ type: FETCH_SMURF });
 export const fetchAllSmurfs = ( smurfs ) => ({ type: FETCH_SMURF_API, payload: smurfs });
 export const failedSmurf = ( error ) => ({ type: FAILED_SMURF_API, payload: error });
 export const addSmurf = ( smurf ) => ({ type: ADD_SMURF, payload: smurf });
