@@ -11,8 +11,6 @@ const AddForm = (props) => {
         description:""
     });
 
-    const { error } = props;
-
     const handleChange = e => {
         setState({
             ...state,
@@ -23,33 +21,33 @@ const AddForm = (props) => {
     const handleSubmit = e => {
         e.preventDefault();
         if (state.name === "" || state.position === "" || state.nickname === "") {
-            errorMessage = "Name, position and nickname fields are required.";
+            addError( "Name, position and nickname fields are required." );
         }
+        console.log(props.error);
     }
 
-    const errorMessage = "";
 
     return(<section>
         <h2>Add Smurf</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={ handleSubmit }>
             <div className="form-group">
                 <label htmlFor="name">Name:</label><br/>
-                <input onChange={handleChange} value={state.name} name="name" id="name" />
+                <input onChange={ handleChange } value={state.name} name="name" id="name" />
             </div>
             <div className="form-group">
                 <label htmlFor="position">Position:</label><br/>
-                <input onChange={handleChange} value={state.position} name="position" id="position" />
+                <input onChange={ handleChange } value={state.position} name="position" id="position" />
             </div>
             <div className="form-group">
                 <label htmlFor="nickname">Nickname:</label><br/>
-                <input onChange={handleChange} value={state.nickname} name="nickname" id="nickname" />
+                <input onChange={ handleChange } value={state.nickname} name="nickname" id="nickname" />
             </div>
             <div className="form-group">
                 <label htmlFor="description">Description:</label><br/>
-                <textarea onChange={handleChange} value={state.description} name="description" id="description" />
+                <textarea onChange={ handleChange } value={state.description} name="description" id="description" />
             </div>
             {
-                errorMessage && <div data-testid="errorAlert" className="alert alert-danger" role="alert">Error: {errorMessage}</div>
+                props.error && <div data-testid="errorAlert" className="alert alert-danger" role="alert">Error: { props.error }</div>
             }
             <button>Submit Smurf</button>
         </form>
